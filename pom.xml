@@ -32,27 +32,26 @@
             <version>5.8.2</version>
             <scope>test</scope>
         </dependency>
-        <!-- not desirable -->
+
         <dependency>
             <groupId>com.javarush</groupId>
-            <artifactId>project-maven</artifactId>
+            <artifactId>desktop-game-engine</artifactId>
             <version>1.0</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/lib/desktop-game-engine.jar</systemPath>
         </dependency>
 
     </dependencies>
 
     <build>
+
         <resources>
             <resource>
-                <directory>${project.build.directory}/classes/lib</directory>
-                <targetPath>lib</targetPath>
+                <directory>${project.build.directory}/dependency</directory>
+                <targetPath>lib/</targetPath>
             </resource>
         </resources>
 
         <plugins>
-            <!-- Usual compilation -->
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -62,26 +61,21 @@
                 </configuration>
             </plugin>
 
-            <!-- Run java-fx app over Maven -->
             <plugin>
                 <groupId>org.openjfx</groupId>
                 <artifactId>javafx-maven-plugin</artifactId>
                 <version>0.0.8</version>
-<!--                <configuration>-->
-<!--                    <mainClass>com.javarush.games.racer.RacerGame</mainClass>-->
-<!--                </configuration>-->
+                <configuration>
+                    <mainClass>
+                        com.javarush.games.racer.RacerGame
+                    </mainClass>
+                </configuration>
             </plugin>
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
-                <version>2.5.1</version>
-                <configuration>
-                    <includeScope>compile</includeScope>
-                    <outputDirectory>
-                        ${basedir}/target/classes/lib
-                    </outputDirectory>
-                </configuration>
+                <version>3.6.0</version>
                 <executions>
                     <execution>
                         <id>copy-dependencies</id>
@@ -89,30 +83,8 @@
                         <goals>
                             <goal>copy-dependencies</goal>
                         </goals>
-                    </execution>
-                </executions>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-resources-plugin</artifactId>
-                <version>3.3.1</version>
-                <executions>
-                    <execution>
-                        <id>copy-resources</id>
-                        <phase>validate</phase>
-                        <goals>
-                            <goal>copy-resources</goal>
-                        </goals>
                         <configuration>
-                            <outputDirectory>${basedir}/target/classes/lib</outputDirectory>
-                            <includeEmptyDirs>true</includeEmptyDirs>
-                            <resources>
-                                <resource>
-                                    <directory>${basedir}/lib</directory>
-                                    <filtering>false</filtering>
-                                </resource>
-                            </resources>
+                            <includeScope>compile</includeScope>
                         </configuration>
                     </execution>
                 </executions>
@@ -132,7 +104,7 @@
                             </mainClass>
                         </manifest>
                         <manifestEntries>
-                            <Class-Path>lib/desktop-game-engine.jar</Class-Path>
+                            <Class-Path>./</Class-Path>
                             <Rsrc-Main-Class>com.javarush.games.racer.RacerGame</Rsrc-Main-Class>
                         </manifestEntries>
                     </archive>
