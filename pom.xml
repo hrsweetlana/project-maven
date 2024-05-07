@@ -13,13 +13,13 @@
         <maven.compiler.target>18</maven.compiler.target>
     </properties>
 
-<!--    <repositories>-->
-<!--        <repository>-->
-<!--            <id>lib</id>-->
-<!--            <name>Game Engine</name>-->
-<!--            <url>file:///${project.basedir}/lib</url> &lt;!&ndash; C:\Java\Projects\project-maven\lib &ndash;&gt;-->
-<!--        </repository>-->
-<!--    </repositories>-->
+    <!--    <repositories>-->
+    <!--        <repository>-->
+    <!--            <id>lib</id>-->
+    <!--            <name>Game Engine</name>-->
+    <!--            <url>file:///${project.basedir}/lib</url> &lt;!&ndash; C:\Java\Projects\project-maven\lib &ndash;&gt;-->
+    <!--        </repository>-->
+    <!--    </repositories>-->
 
     <dependencies>
         <dependency>
@@ -54,7 +54,7 @@
     <build>
         <resources>
             <resource>
-                <directory>lib</directory>
+                <directory>${project.basedir}/lib</directory>
             </resource>
         </resources>
 
@@ -85,13 +85,13 @@
                 <version>2.5.1</version>
                 <configuration>
                     <outputDirectory>
-                        lib/
+                        ${basedir}/target/classes/lib
                     </outputDirectory>
                 </configuration>
                 <executions>
                     <execution>
                         <id>copy-dependencies</id>
-                        <phase>install</phase>
+                        <phase>compile</phase>
                         <goals>
                             <goal>copy-dependencies</goal>
                         </goals>
@@ -100,20 +100,59 @@
             </plugin>
 
             <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-jar-plugin</artifactId>
-                    <version>3.4.1</version>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>3.3.1</version>
+                <executions>
+                    <execution>
+                        <id>copy-resources</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${basedir}/target/classes/lib</outputDirectory>
+                            <includeEmptyDirs>true</includeEmptyDirs>
+                            <resources>
+                                <resource>
+                                    <!--                                    <targetPath>${basedir}/target/lib</targetPath>-->
+                                    <directory>${basedir}/lib</directory>
+                                    <filtering>false</filtering>
+                                </resource>
+                                <!--                                <resource>-->
+                                <!--                                    <targetPath>${basedir}/target/resources</targetPath>-->
+                                <!--                                    <directory>resources</directory>-->
+                                <!--                                    <filtering>false</filtering>-->
+                                <!--                                </resource>-->
+                                <!--                                <resource>-->
+                                <!--                                    <targetPath>${basedir}/target/xml</targetPath>-->
+                                <!--                                    <directory>xml</directory>-->
+                                <!--                                    <filtering>false</filtering>-->
+                                <!--                                </resource>-->
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.4.1</version>
                 <configuration>
+                    <!--                    <includes>-->
+                    <!--                        <include>/lib</include>-->
+                    <!--                    </includes>-->
                     <archive>
                         <manifest>
                             <addClasspath>true</addClasspath>
-<!--                            <classpathPrefix>lib/</classpathPrefix>-->
-                            <mainClass>org.eclipse.jdt.internal.jarinjarloader.JarRsrcLoader</mainClass>
+                            <!--                            <classpathPrefix>lib/</classpathPrefix>-->
+                            <mainClass>org/eclipse/jdt/internal/jarinjarloader/JarRsrcLoader.class</mainClass>
                         </manifest>
                         <manifestEntries>
-                                <Class-Path>${project.basedir}/lib/desktop-game-engine.jar</Class-Path>
-                                <Rsrc-Main-Class>com.javarush.games.racer.RacerGame.jar</Rsrc-Main-Class>
-<!--                                <Rsrc-Class-Path>com.javarush.games.racer.RacerGame.jar</Rsrc-Class-Path>-->
+                            <Class-Path>lib/desktop-game-engine.jar</Class-Path>
+                            <Rsrc-Main-Class>com/javarush/games/racer/RacerGame.class</Rsrc-Main-Class>
+                            <!--                                <Rsrc-Class-Path>com.javarush.games.racer.RacerGame.jar</Rsrc-Class-Path>-->
                         </manifestEntries>
                     </archive>
                 </configuration>
